@@ -57,32 +57,32 @@ VALIDATE $? "Creating app directory"
 curl -o /tmp/catalogue.zip https://roboshop-artifacts.s3.amazonaws.com/catalogue-v3.zip &>>$LOG_FILE
 VALIDATE $? "Downloading Catalogue"
 
-rm -rf /app/*
-cd /app 
-unzip /tmp/catalogue.zip &>>$LOG_FILE
-VALIDATE $? "unzipping catalogue"
+# rm -rf /app/*
+# cd /app 
+# unzip /tmp/catalogue.zip &>>$LOG_FILE
+# VALIDATE $? "unzipping catalogue"
 
-npm install &>>$LOG_FILE
-VALIDATE $? "Installing Dependencies"
+# npm install &>>$LOG_FILE
+# VALIDATE $? "Installing Dependencies"
 
-cp $SCRIPT_DIR/catalogue.service /etc/systemd/system/catalogue.service
-VALIDATE $? "Copying catalogue service"
+# cp $SCRIPT_DIR/catalogue.service /etc/systemd/system/catalogue.service
+# VALIDATE $? "Copying catalogue service"
 
-systemctl daemon-reload &>>$LOG_FILE
-systemctl enable catalogue  &>>$LOG_FILE
-systemctl start catalogue
-VALIDATE $? "Starting Catalogue"
+# systemctl daemon-reload &>>$LOG_FILE
+# systemctl enable catalogue  &>>$LOG_FILE
+# systemctl start catalogue
+# VALIDATE $? "Starting Catalogue"
 
-cp $SCRIPT_DIR/mongo.repo /etc/yum.repos.d/mongo.repo 
-dnf install mongodb-mongosh -y &>>$LOG_FILE
-VALIDATE $? "Installing MongoDB Client"
+# cp $SCRIPT_DIR/mongo.repo /etc/yum.repos.d/mongo.repo 
+# dnf install mongodb-mongosh -y &>>$LOG_FILE
+# VALIDATE $? "Installing MongoDB Client"
 
-STATUS=$(mongosh --host mongodb.sindhu.agency --eval 'db.getMongo().getDBNames().indexOf("catalogue")')
-if [ $STATUS -lt 0 ]
-then
-    mongosh --host mongodb.sindhu.agency </app/db/master-data.js &>>$LOG_FILE
-    VALIDATE $? "Loading data into MongoDB"
-else
-    echo -e "Data is already loaded ... $Y SKIPPING $N"
+# STATUS=$(mongosh --host mongodb.sindhu.agency --eval 'db.getMongo().getDBNames().indexOf("catalogue")')
+# if [ $STATUS -lt 0 ]
+# then
+#     mongosh --host mongodb.sindhu.agency </app/db/master-data.js &>>$LOG_FILE
+#     VALIDATE $? "Loading data into MongoDB"
+# else
+#     echo -e "Data is already loaded ... $Y SKIPPING $N"
 fi
 
